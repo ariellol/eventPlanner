@@ -10,17 +10,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 
-public class GuestManager extends Fragment implements View.OnClickListener {
+public class GuestManager extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     protected ArrayList guestsList;
     protected GuestAdapter guestsAdapter;
@@ -41,10 +45,7 @@ public class GuestManager extends Fragment implements View.OnClickListener {
     TextView totalMoneyTextView;
     TextView totalGuests;
     Context context;
-
     Button addGuest;
-    ImageView editGuest;
-    ImageView deleteGuest;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,12 +53,21 @@ public class GuestManager extends Fragment implements View.OnClickListener {
         context = this.getContext();
         guestsList = new ArrayList<Guest>();
         guestsListView = view.findViewById(R.id.guestsList);
-        guestsAdapter = new GuestAdapter(this.getContext(),0,0,guestsList);
+        guestsAdapter = new GuestAdapter(this.getContext(),0,0,guestsList,this);
         guestsListView.setAdapter(guestsAdapter);
+
         editDialog = new Dialog(context);
         editDialog.setContentView(R.layout.edit_dialog_layout);
+        dialogSaveChanges = editDialog.findViewById(R.id.saveChanges);
+        dialogEditName = editDialog.findViewById(R.id.changeName);
+        dialogEditLastName = editDialog.findViewById(R.id.changeLastName);
+        dialogEditMoney = editDialog.findViewById(R.id.changeMoney);
+
         deleteDialog = new Dialog(context);
         deleteDialog.setContentView(R.layout.are_u_sure);
+        dialogDeleteButton = deleteDialog.findViewById(R.id.deleteButton);
+        dialogCancelButton = deleteDialog.findViewById(R.id.cancelButton);
+
         moneyTextField = view.findViewById(R.id.guestsMoney);
         lastNameTextField = view.findViewById(R.id.guestLastName);
         nameTextField = view.findViewById(R.id.guestName);
@@ -67,10 +77,24 @@ public class GuestManager extends Fragment implements View.OnClickListener {
         totalMoneyTextView.setText("Total Money " + totalMoney);
         addGuest = view.findViewById(R.id.addGuest);
         addGuest.setOnClickListener(this);
-
         return view;
     }
 
+
+    public void openPopupMenu(View view){
+        PopupMenu popupMenu = new PopupMenu(context,view);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.items_options);
+        popupMenu.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if(item.getItemId() == R.id.editOption){
+        }
+
+        return true;
+    }
 
     public void addGuest(){
         int money;
@@ -96,28 +120,19 @@ public class GuestManager extends Fragment implements View.OnClickListener {
         totalMoney += money;
         totalMoneyTextView.setText("Total Money: " + totalMoney);
         totalGuests.setText("Total Guests " + guestsList.size());
-        guestsAdapter.editImageView.setOnClickListener(this);
-        guestsAdapter.deleteImageView.setOnClickListener(this);
     }
 
     public void editGuest(View view){
         editDialog.setTitle("Change Details");
         editDialog.show();
         editDialog.setCancelable(true);
-
-        dialogEditMoney = editDialog.findViewById(R.id.changeMoney);
-        dialogEditName = editDialog.findViewById(R.id.changeName);
-        dialogSaveChanges = editDialog.findViewById(R.id.saveChanges);
-        dialogEditLastName = editDialog.findViewById(R.id.changeLastName);
-
         dialogEditName.setText(((Guest)guestsList.get((int)view.getTag())).getName());
         dialogEditLastName.setText(((Guest)guestsList.get((int)view.getTag())).getLastName());
         dialogEditMoney.setText(Integer.toString(((Guest)guestsList.get((int)view.getTag())).getMoney()));
         position = (int)view.getTag();
     }
 
-    public void saveChanges(View view){
-
+    public void saveChanges(){
         Log.d("totalMoney: " , ""+ totalMoney);
         totalMoney -= ((Guest) guestsList.get(position)).getMoney();
         Log.d("totalMoney: " , ""+ totalMoney);
@@ -133,11 +148,8 @@ public class GuestManager extends Fragment implements View.OnClickListener {
             Toast.makeText(context, "INVAILD INPUT", Toast.LENGTH_LONG).show();
             return;
         }
-
-
         editDialog.cancel();
         guestsAdapter.notifyDataSetChanged();
-
     }
 
     public void deleteGuest(View view) {
@@ -146,12 +158,10 @@ public class GuestManager extends Fragment implements View.OnClickListener {
         TextView areYouSure = deleteDialog.findViewById(R.id.areYouSure);
         areYouSure.setText("Are you sure you want to delete " + ((Guest)guestsList.get((int)view.getTag())).getName()
             + " " +((Guest)guestsList.get((int)view.getTag())).getLastName());
-        dialogDeleteButton = deleteDialog.findViewById(R.id.deleteButton);
-        dialogCancelButton = deleteDialog.findViewById(R.id.cancelButton);
         position = (int) view.getTag();
     }
 
-    public void delete(View view){
+    public void delete(){
         totalMoney -= ((Guest)guestsList.get(position)).getMoney();
         totalMoneyTextView.setText("Total Money: " + totalMoney);
         guestsList.remove(position);
@@ -160,24 +170,13 @@ public class GuestManager extends Fragment implements View.OnClickListener {
         deleteDialog.cancel();
     }
 
-    public void cancel(View view){
+    public void cancel(){
         deleteDialog.cancel();
     }
 
     @Override
     public void onClick(View v) {
-        if(v == null)
-            return;
-        switch (v.getId()){
-            case R.id.addGuest:
-                addGuest();
-                return;
-            case R.id.edit:
-                editGuest(v);
-                return;
-            case R.id.delete:
-                deleteGuest(v);
-                return;
-        }
+        addGuest();
     }
+
 }

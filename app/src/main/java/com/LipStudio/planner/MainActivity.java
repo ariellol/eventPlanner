@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
@@ -42,10 +44,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-        @Override
+    @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             switch (menuItem.getItemId()){
+                case R.id.home:
+                    startActivity(new Intent(this, MainActivity.class));
+                    navBar.setCheckedItem(R.id.home);
+                    break;
                 case R.id.guests:
                     transaction.replace(R.id.fragmentContainer, new GuestManager());
                     transaction.addToBackStack(null);
