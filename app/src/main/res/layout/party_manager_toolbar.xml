@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/guestToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="#0C6ABD"
+    android:isScrollContainer="false"
+    android:layoutDirection="rtl"
+    android:popupTheme="@style/toolbarTheme"
+    app:theme="@style/toolbarTheme">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/menuIcon"
+        android:src="@drawable/ic_menu_black_24dp"/>
+</Toolbar>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "469925626405",
+    "firebase_url": "https://party-plan-67609.firebaseio.com",
+    "project_id": "party-plan-67609",
+    "storage_bucket": "party-plan-67609.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469925626405:android:1e0a9bc6f31cd75915b5cc",
+        "android_client_info": {
+          "package_name": "com.LipStudio.planner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469925626405-mqevhvtddr6ou167ih7kkdu70vaagafn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.LipStudio.planner",
+            "certificate_hash": "6cd42609c83f67ed44a21c3b2facbdf6e2f37c88"
+          }
+        },
+        {
+          "client_id": "469925626405-jpadpdh5t8s3kd87gvhktppr4vpgtft9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSYBZtI2OF4wjMYeI-su7W2xHkrX9PMR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469925626405-jpadpdh5t8s3kd87gvhktppr4vpgtft9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

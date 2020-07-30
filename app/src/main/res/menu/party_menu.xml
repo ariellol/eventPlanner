@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+    <group>
+        <item
+            android:title="none"
+            android:id="@+id/aaa"
+            android:icon="@drawable/ic_playlist_add_check_black_24dp"/>
+    </group>
+</menu>

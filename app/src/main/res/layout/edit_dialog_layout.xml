@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="450dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/changeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="First Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/changeLastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/changeMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Amount of Money"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/saveChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="saveChanges"
+        android:text="Save Changes" />
+</LinearLayout>
