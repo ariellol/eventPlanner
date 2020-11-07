@@ -3,8 +3,6 @@ package com.LipStudio.planner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -22,9 +20,11 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
 import java.util.ArrayList;
 
-public class GuestManager extends Fragment implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class GuestManager extends Fragment implements PopupMenu.OnMenuItemClickListener{
 
     protected ArrayList guestsList;
     protected GuestAdapter guestsAdapter;
@@ -37,15 +37,18 @@ public class GuestManager extends Fragment implements View.OnClickListener, Popu
     Dialog deleteDialog;
     Button dialogCancelButton;
     Button dialogDeleteButton;
+    Dialog addGuestDialog;
     EditText moneyTextField;
     EditText lastNameTextField;
     EditText nameTextField;
-    int position;
-    int totalMoney = 0;
+    private int position;
+    private int totalMoney = 0;
     TextView totalMoneyTextView;
     TextView totalGuests;
-    Context context;
+    private Context context;
     Button addGuest;
+    View currentView;
+    Toolbar toolbar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,15 +71,17 @@ public class GuestManager extends Fragment implements View.OnClickListener, Popu
         dialogDeleteButton = deleteDialog.findViewById(R.id.deleteButton);
         dialogCancelButton = deleteDialog.findViewById(R.id.cancelButton);
 
-        moneyTextField = view.findViewById(R.id.guestsMoney);
-        lastNameTextField = view.findViewById(R.id.guestLastName);
-        nameTextField = view.findViewById(R.id.guestName);
+        addGuestDialog = new Dialog(context);
+        addGuestDialog.setContentView(R.layout.add_guest);
+        nameTextField = addGuestDialog.findViewById(R.id.guestName);
+        lastNameTextField = addGuestDialog.findViewById(R.id.guestLastName);
+        moneyTextField = addGuestDialog.findViewById(R.id.guestsMoney);
+        addGuest = addGuestDialog.findViewById(R.id.addGuest);
+
         totalGuests = view.findViewById(R.id.totalGuests);
         totalMoneyTextView = view.findViewById(R.id.totalMoney);
         totalGuests.setText("Total Guests: " + guestsList.size());
         totalMoneyTextView.setText("Total Money " + totalMoney);
-        addGuest = view.findViewById(R.id.addGuest);
-        addGuest.setOnClickListener(this);
         return view;
     }
 
@@ -86,15 +91,22 @@ public class GuestManager extends Fragment implements View.OnClickListener, Popu
         popupMenu.setOnMenuItemClickListener(this);
         popupMenu.inflate(R.menu.items_options);
         popupMenu.show();
+        currentView = view;
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if(item.getItemId() == R.id.editOption){
+        if(item.getItemId() == R.id.editOption)
+            editGuest(currentView);
+        if (item.getItemId() == R.id.deleteOption)
+            deleteGuest(currentView);
+        if(item.getItemId() == R.id.add) {
+            Toast.makeText(context, "AASOF", Toast.LENGTH_SHORT).show();
+            addGuestDialog.show();
         }
-
         return true;
     }
+
 
     public void addGuest(){
         int money;
@@ -152,7 +164,7 @@ public class GuestManager extends Fragment implements View.OnClickListener, Popu
         guestsAdapter.notifyDataSetChanged();
     }
 
-    public void deleteGuest(View view) {
+    private void deleteGuest(View view) {
         deleteDialog.show();
         deleteDialog.setCancelable(true);
         TextView areYouSure = deleteDialog.findViewById(R.id.areYouSure);
@@ -161,22 +173,17 @@ public class GuestManager extends Fragment implements View.OnClickListener, Popu
         position = (int) view.getTag();
     }
 
-    public void delete(){
+    protected void delete(){
         totalMoney -= ((Guest)guestsList.get(position)).getMoney();
         totalMoneyTextView.setText("Total Money: " + totalMoney);
         guestsList.remove(position);
         totalGuests.setText("Total Guests: " + guestsList.size());
         guestsAdapter.notifyDataSetChanged();
-        deleteDialog.cancel();
+        deleteDialog.dismiss();
     }
 
-    public void cancel(){
-        deleteDialog.cancel();
-    }
-
-    @Override
-    public void onClick(View v) {
-        addGuest();
+    protected void cancel(){
+        deleteDialog.dismiss();
     }
 
 }

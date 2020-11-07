@@ -18,8 +18,7 @@ public class GuestAdapter extends ArrayAdapter<Guest> implements View.OnClickLis
     Context context;
     List<Guest> guests;
     GuestManager guestManager;
-    ImageView editImageView;
-    ImageView deleteImageView;
+
     ImageView popUpImageView;
     public GuestAdapter(Context context, int resource, int viewResourceId, List<Guest> guests,GuestManager guestManager) {
         super(context, resource, viewResourceId, guests);
@@ -37,24 +36,17 @@ public class GuestAdapter extends ArrayAdapter<Guest> implements View.OnClickLis
         TextView guestTextView = view.findViewById(R.id.name);
         TextView guestLastNameTextView = view.findViewById(R.id.lastName);
         TextView guestMoneyTextView = view.findViewById(R.id.money);
-        editImageView = view.findViewById(R.id.edit);
-        deleteImageView = view.findViewById(R.id.delete);
-        popUpImageView = view.findViewById(R.id.popUp);
+        popUpImageView = view.findViewById(R.id.popup);
         Guest guest = this.guests.get(position);
         guestTextView.setText(guest.getName());
         guestLastNameTextView.setText(guest.getLastName());
         guestMoneyTextView.setText(String.valueOf(guest.getMoney()));
 
-        editImageView.setImageResource(R.drawable.edit);
-        deleteImageView.setImageResource(R.drawable.trash);
-        editImageView.setOnClickListener(this);
-        deleteImageView.setOnClickListener(this);
         popUpImageView.setOnClickListener(this);
         guestManager.dialogSaveChanges.setOnClickListener(this);
         guestManager.dialogDeleteButton.setOnClickListener(this);
         guestManager.dialogCancelButton.setOnClickListener(this);
-        editImageView.setTag(position);
-        deleteImageView.setTag(position);
+        guestManager.addGuest.setOnClickListener(this);
         popUpImageView.setTag(position);
         return view;
     }
@@ -62,21 +54,20 @@ public class GuestAdapter extends ArrayAdapter<Guest> implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.edit:
-                guestManager.editGuest(v);
-                break;
-            case R.id.delete:
-                guestManager.deleteGuest(v);
-                break;
             case R.id.saveChanges:
                 guestManager.saveChanges();
                 break;
+            case R.id.addGuest:
+                guestManager.addGuest();
             case R.id.deleteButton:
                 guestManager.delete();
+                break;
             case R.id.cancelButton:
                 guestManager.cancel();
-            case R.id.popUp:
+                break;
+            case R.id.popup:
                 guestManager.openPopupMenu(v);
+                break;
         }
     }
 }
